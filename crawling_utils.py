@@ -12,7 +12,7 @@ def add_check(studentNum, password): # 아디 / 비번 받아서 로그인 가�
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
 
-    driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)  # 경로 수정 필요
+    driver = webdriver.Chrome('/home/ubuntu/Capstone/chromedriver', chrome_options=chrome_options)  # 경로 수정 필요
     driver.get('https://wis.hufs.ac.kr/src08/jsp/index.jsp')  # 종정시 로그인 페이지
     driver.find_element_by_xpath('/html/body/div/form[3]/div[2]/div/div[2]/div/input[1]').send_keys(f'{studentNum}')
     driver.find_element_by_xpath('/html/body/div/form[3]/div[2]/div/div[2]/div/input[2]').send_keys(f'{password}')
@@ -53,7 +53,7 @@ def entranceSystem(id, password):   # 아디 빌려서 체크
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
 
-    driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)  # 경로 수정 필요
+    driver = webdriver.Chrome('/home/ubuntu/Capstone/chromedriver', chrome_options=chrome_options)  # 경로 수정 필요
     driver.get('https://wis.hufs.ac.kr/src08/jsp/index.jsp')  # 종정시 로그인 페이지
     driver.find_element_by_xpath('/html/body/div/form[3]/div[2]/div/div[2]/div/input[1]').send_keys(f'{id}')
     driver.find_element_by_xpath('/html/body/div/form[3]/div[2]/div/div[2]/div/input[2]').send_keys(f'{password}')
