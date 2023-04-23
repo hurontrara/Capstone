@@ -14,7 +14,14 @@ app.config['MYSQL_DB'] = os.environ.get('Capstone_db')
 mysql = MySQL(app)
 
 
-@app.route('/', methods=["POST"])   # 회원가입 로직
+@app.route('/test', methods=["POST"])
+def test():
+    print("TEST")
+
+    return "TEST SUCCESSFUL" 
+
+
+@app.route('/', methods=["POST"]) 
 def process():
     param = request.get_json()
     studentNum = param['studentNum']
