@@ -32,6 +32,6 @@ def main(id, password):
     culture_list = getCultures()  # [['인성교육', '0', '0', '(None)'], ['세계시민교육', '0', '0', '(None)'], ...]
     close()
 
-    dict_object = jsonify(name, major, minor, double_major, credit, class_info, finished_semester, exam_papers, foreign_others, culture_list)
+    dict_object = jsonify(name, major, minor, double_major, credit, class_info, finished_semester, exam_papers, foreign_others, culture_list, int(id[:4]))
     
     return dict_object

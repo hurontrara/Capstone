@@ -61,6 +61,8 @@ def check(class_info, major, number, second=False): # [['AI융합전공(Software
 
     return {'전필과목' : required_list, '수강과목' : committed_list, '수강완료율' : percent}
 
+
+
 def dict_to_variables(dict_):  # dict_ : json object
 
     name = dict_['name']
@@ -80,7 +82,7 @@ def dict_to_variables(dict_):  # dict_ : json object
 
 
 
-def jsonify(name, major, minor, double_major, credit, class_info, finished_semester, exam_papers, foreign_others, culture_list, number=18):
+def jsonify(name, major, minor, double_major, credit, class_info, finished_semester, exam_papers, foreign_others, culture_list, num):
     
     global_dict = {}
 
@@ -114,7 +116,27 @@ def jsonify(name, major, minor, double_major, credit, class_info, finished_semes
         number = int(local_list[2])  # 0
         local_dict[name] = number
     
-    global_dict['cultures'] = local_dict
+    required_list = get_culture_required_list(num) #  {'미네르바인문' : 6, '대학외국어' : 6, '신입생세미나' : 1 ...}
+    taking_list = {'미네르바인문' : local_dict['미네르바인문'], '대학외국어' : local_dict['대학외국어'],
+                    '신입생세미나' : local_dict['신입생세미나'], 'HUFS CAREER' : local_dict['HUFS CARRER'],
+                    '핵심인문기초' : local_dict['핵심인문기초'], '소프트웨어' : local_dict['소프트웨어'],
+                    }
+    
+    local_num = 0
+    local_list = ['언어와문학', '문화와예술', '역사와철학', '인간과사회', '과학과기술']
+    for key, value in local_dict.items():
+        if key in local_list:
+            local_num += 2
+            local_list.remove(key)
+    taking_list['핵심교양'] = local_num
+
+    local_dict2 = {}
+
+    local_dict2['교양필수학점'] = required_list
+    local_dict2['교필수강학점'] = taking_list 
+
+
+    global_dict['cultures'] = local_dict2
 
     # 7. 학기별 평점  [['국제통상학과','D02103',' Mathematics for Economics (Mathematics for Economics)','1전공','3','A+','', '', '', "2018 - 1"], ... ]
 
@@ -175,3 +197,18 @@ def jsonify(name, major, minor, double_major, credit, class_info, finished_semes
     return global_dict
 
 
+def get_culture_required_list(num):  # 사범대 예외;;
+
+    base_dict = {'미네르바인문' : 6, '대학외국어' : 6, '신입생세미나' : 1, 'HUFS CARRER' : 1, 
+                 '핵심교양' : 0, '핵심인문기초' : 0, '소프트웨어' : 0}
+    
+    if num == 2016: # 16학번 대상
+        base_dict['핵심교양'] = 6
+    elif num <= 2019: # 17, 18, 19학번 대상
+        base_dict['핵심교양'] = 4
+        base_dict['핵심인문기초'] = 2
+    elif num >= 2020: # 20학번 이후
+        base_dict['소프트웨어'] = 3
+        base_dict['핵심인문기초'] = 2
+
+    return base_dict
