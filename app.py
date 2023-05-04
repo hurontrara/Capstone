@@ -56,15 +56,37 @@ def process():
             cur.execute('INSERT INTO students (name, major, minor, finished_semester, credit, cultures, scores, final_score, exam_papers, foreigns, major_required, minor_required, student_num, password) VALUES ' + 
                     f"('{name}', '{major}', '{minor}', '{finished_semester}', '{credit}', '{cultures}', \
                     '{scores}', '{final_score}', '{exam_papers}', '{foreigns}', '{major_required}', '{minor_required}', '{studentNum_json}', '{password_json}' )")
-        else: # 동기화 기능
-            # cur.execute
-        # 테이블 새로 까야됨
-        # 동기화 시에, 다른 쿼리
-            pass
-        mysql.connection.commit()
-        cur.close()
+            
+            mysql.connection.commit()
+            cur.close()
 
-        return 'Data added successfully'
+            return 'Data added successfully'
+
+        else: # 동기화 기능
+            cur.execute(f'''
+            UPDATE students
+            SET name = '{name}',
+                major = '{major}',
+                minor = '{minor}',
+                finished_semester = '{finished_semester}',
+                credit = '{credit}',
+                cultures = '{cultures}',
+                scores = '{scores}',
+                final_score = '{final_score}',
+                exam_papers = '{exam_papers}',
+                foreigns = '{foreigns}',
+                major_required = '{major_required}',
+                minor_required = '{minor_required}',
+                student_num = '{studentNum_json}',
+                password = '{password_json}'
+            WHERE student_num = '{studentNum}';
+            ''')
+
+            mysql.connection.commit()
+            cur.close()
+
+            return 'Data updated successfully'
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
