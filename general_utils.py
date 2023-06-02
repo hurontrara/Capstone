@@ -22,42 +22,198 @@ def fill_dict(list_, dict_, grade_dict):
     for key,value in dict_.items():
         dict_[key] = value[1] / value[0]
 
-# 전공, 학번, 이중유무
-def check(class_info, major, number, second=False): # [['AI융합전공(Software&AI)', 'V41009', ' 운영체제 (Operating System)', '이중', '3', 'B+', '', '', '', "2018 - 1"], ['미네르바교양대학(서울)', 'Y13101', ' Communicative English(1) : L/S (Communicative English(1) : L/S)', '교양', '3', 'B+', '', '', ''], ...]
+# 전공, 학번, 이중유무  # 
+def check(class_info, major, num, second): # [['AI융합전공(Software&AI)', 'V41009', ' 운영체제 (Operating System)', '이중', '3', 'B+', '', '', '', "2018 - 1"], ['미네르바교양대학(서울)', 'Y13101', ' Communicative English(1) : L/S (Communicative English(1) : L/S)', '교양', '3', 'B+', '', '', ''], ...]
     
-    class_list = []   # ['운영체제', '거시경제학', ...]
 
+    # committed_list = []
+    # for i in class_list:
+    #     for j in required_list:
+    #         if (i in j) | (j in i):
+    #             committed_list.append(i)
+
+
+    class_list = []   # ['V410090', 'V410091', ...]
     for class_ in class_info:
-        idx = class_[2].rfind('(')
-        class_list.append(class_[2][:idx].replace(' ', ''))
+        # idx = class_[2].rfind('(')
+        # class_list.append(class_[2][:idx].replace(' ', ''))
+        class_list.append(class_[1])    
 
-    # if major == '스페인어과':
-    #     ValueError()
-    # elif major == '아랍어과':
-    #     ValueError()
-    # elif major == '중국언어문화전공':
-    #     ValueError()
-    # elif major== '차이나데이터큐레이션전공':
-    #     ValueError()
-    # elif major == '포르투갈어과':
-    #     ValueError()
-    # elif major == 'ELLT학과':
-    #     ValueError()
+    if "ELLT" in major:
 
-    df = pd.read_csv('final.csv', index_col=0)
+        required_list = ['A011273', 'A011283', 'A011210', 'A102031']
 
-    required_list = df[[(i in major) | (major in i) for i in df['학과명']]]['과목명'].apply(lambda x: x.replace(' ', '')).tolist() # [초급프랑스어강독(1), ...]
+        if num >= 2018:
+
+            for i in class_list:
+
+                if "General" in i:
+                    required_list.append('A017401')
+                    required_list.append('A101041')
+
+                elif "Honors" in i:
+                    required_list.append('A017411')
+                    required_list.append('A101051')
+
+
+            if (num >= 2018) and (second == True):
+                required_list.remove('A102031')
+
+    elif "Diplomacy" in major:
+        required_list = ['C011231', 'C011241', 'C011251', 'C011261', 'C011331', 'C011341']
+        
+        if num >= 2017:
+            required_list.append('C011351')
+            required_list.append('C011361')
+            required_list.append('C011634')
+            required_list.append('C011902')
+            required_list.append('C011913')
+            required_list.append('C011922')
+        if num >= 2023:
+            required_list.append('C011931')
+            required_list.append('C011991')
+
+    elif "국제학" in major:
+        required_list = ['D01101G', 'D01102H', 'K011062', 'K012472', 'K011013']
+
+        if (num >= 2019):
+            if (second == True):
+                pass
+            else:
+                required_list.append('K011043')
+                required_list.append('K011092')
+                required_list.append('K011102')
+    
+    elif '말레이' in major:
+        required_list = ['B031104', 'B031091', 'B034931', 'B034691', 'B031113', 'B031311', 'O031155', 'B032291', 'B031263']
+        if num >= 2022:
+            required_list.append('B032063')
+            required_list.append('O032023')
+
+    
+    elif '뉴미디어' in major:
+        required_list = ['C045311', 'C045321', 'C045291', 'C045341', 'C034011', 'C073011']
+
+        if num <= 2018:
+            required_list.append('C044922')
+        else:
+            required_list.append('C044751')
+
+    elif '이탈리아' in major:
+        required_list = ['A061023']
+
+        if num <= 2018:
+            required_list.append('A062123')
+            required_list.append('A061023')
+
+        else:
+            required_list.append('A061054')
+            required_list.append('A061062')
+
+    elif '스페인' in major:
+        required_list = ['A054832', 'A054851', 'A054842', 'A054861']
+
+        if num <= 2016:
+            required_list.append('A051111')
+            required_list.append('A051151')
+            required_list.append('A052371')
+            required_list.append('A052391')
+            required_list.append('A053831')
+            required_list.append('A053851')
+
+            required_list.append('A051121')
+            required_list.append('A051151')
+            required_list.append('A052381')
+            required_list.append('A052391')
+            required_list.append('A053841')
+            required_list.append('A053861')
+
+
+        if (num >= 2017) and (num <= 2019):
+            required_list.append('J110051')
+            required_list.append('J110201')
+
+
+    elif '중국언어문화' in major:
+        required_list = ['B013713', 'B012151']
+
+        if num >= 2021:
+            required_list.append('B015481')
+            required_list.append('B015242')
+
+        if num >= 2023:
+            required_list.append('B014243')
+
+    
+    elif '스칸' in major:
+        required_list = ['A093231', 'A093261']
+
+        if num <= 2020:
+            required_list.append('A091072')
+            required_list.append('A091082')
+
+        if num >= 2022:
+            required_list.append('A093692')
+            required_list.append('A091151')
+            required_list.append('A092072')
+            required_list.append('A093222')
+            required_list.append('A093272')
+            required_list.append('A093691')
+
+    elif '포르' in major:
+        required_list = ['A071151', 'A072072', 'A071342', 'A073171', 'A071162', 'A072082', 'A074661', 'N073272']
+
+        if num == 2016:
+            required_list.append('A074671')
+            required_list.append('A071361')
+
+        elif (num >= 2017) and (num <= 2020):
+            required_list.append('A071361')
+            required_list.append('A071361')
+            required_list.append('A071012')
+            required_list.append('A074652')
+            required_list.append('A071461')
+            required_list.append('A074671')
+            required_list.append('A071382')
+            required_list.append('A071022')
+        
+        elif num == 2021:
+            required_list.append('A071361')
+            required_list.append('A071361')
+            required_list.append('A071012')
+            required_list.append('A074652')
+            required_list.append('A071382')
+
+        elif (num == 2022) or (num == 2023):
+            required_list.append('A071382')
+            required_list.append('A074652')
+
+        else:
+            pass
+
+    else:
+        df = pd.read_excel('전필 및 학수번호.xlsx', index_col=0)
+        required_list = df[[(i in major) | (major in i) for i in df['학과명']]]['학수번호'].apply(lambda x: x[:7]).tolist() # [초급프랑스어강독(1), ...]
 
     committed_list = []
     for i in class_list:
         for j in required_list:
-            if (i in j) | (j in i):
+            if (i in j) or (j in i):
                 committed_list.append(i)
 
     if len(required_list) == 0:
         percent = 100
     else:
         percent = len(committed_list) / len(required_list)
+
+    class_names = df['과목명'] 
+    class_nums = df['학수번호']
+    def find_indexes(series, search_string):
+        return series[series.str.contains(search_string)].index
+
+    required_list = pd.Series(required_list).apply(lambda x : find_indexes(class_nums, x)[0]).apply(lambda x: class_names[x]).to_list()
+    committed_list = pd.Series(committed_list).apply(lambda x : find_indexes(class_nums, x)[0]).apply(lambda x: class_names[x]).to_list()
+
 
     return {'전필과목' : required_list, '수강과목' : committed_list, '수강완료율' : percent}
 
@@ -125,7 +281,7 @@ def jsonify(name, major, minor, double_major, credit, class_info, finished_semes
     local_num = 0
     local_list = ['언어와문학', '문화와예술', '역사와철학', '인간과사회', '과학과기술']
     for key, value in local_dict.items():
-        if key in local_list:
+        if (key in local_list) and (value >= 2):
             local_num += 2
             local_list.remove(key)
     taking_list['핵심교양'] = local_num
@@ -191,8 +347,8 @@ def jsonify(name, major, minor, double_major, credit, class_info, finished_semes
     global_dict['foreigns'] = local_dict
 
     # 12. 전필관련 처리
-    global_dict['1전공'] = check(class_info, major, number)
-    global_dict['이중전공'] = check(class_info, minor, number)
+    global_dict['1전공'] = check(class_info, major, num, False)
+    global_dict['이중전공'] = check(class_info, minor, num, True)
 
     return global_dict
 

@@ -38,6 +38,9 @@ def process():
         cur = mysql.connection.cursor()
 
         dict_object = main(studentNum, password)
+        dict_object['student_num'] = str(studentNum)
+        dict_object['password'] = str(password)
+        dict_object_json = json.dumps(dict_object, ensure_ascii=False, indent=4)
 
         name, major, minor, finished_semester, credit, cultures, scores, final_score, exam_papers, foreigns, major_required, minor_required = \
             dict_to_variables(dict_object)
@@ -60,7 +63,7 @@ def process():
             mysql.connection.commit()
             cur.close()
 
-            return 'Data added successfully'
+            return dict_object_json
 
         else: # 동기화 기능
             cur.execute(f'''
@@ -85,7 +88,7 @@ def process():
             mysql.connection.commit()
             cur.close()
 
-            return 'Data updated successfully'
+            return dict_object_json
 
 
 if __name__ == "__main__":
